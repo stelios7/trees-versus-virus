@@ -1,0 +1,1 @@
+Label=Class{__includes=BaseUIElement}function Label:init(a)self.x=a.x;self.y=a.y;self.width=a.width;self.height=a.height;self.parent=a.parent or self:createNewParent(self.x,self.y,self.width,self.height)self.message={text=a.msg.text,font=a.msg.font}end
