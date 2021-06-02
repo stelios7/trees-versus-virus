@@ -138,3 +138,23 @@ end
 function love.wheelmoved(x, y)
     ZOOM_SCALE = math.max(MAX_ZOOMOUT, math.min((ZOOM_SCALE + y * .1), MAX_ZOOMIN))
 end
+
+function Board:contaminate(source)
+    local x, y = source.gridX, source.gridY
+    local adjacents = {
+        self.tiles[math.min(BOARD_HEIGHT, y + 1)][x],
+        self.tiles[y][math.min(BOARD_WIDTH, x + 1)],
+        self.tiles[math.max(1, y - 1)][x],
+        self.tiles[y][math.max(1, x - 1)]
+    }
+
+    for k, tile in pairs(adjacents) do
+        if not tile.infected and not tile.hasTree then
+            tile.infected = true
+            tile.canInfect = true
+            table.insert(self.infectedTiles, tile)
+            print(#self.infectedTiles)
+        end
+    end
+    source.canInfect = false
+end

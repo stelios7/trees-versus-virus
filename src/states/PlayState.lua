@@ -18,7 +18,7 @@ function PlayState:init(board)
     self.virus = {
         virusTimer = 0,
         virusSpreadFactor = 0,
-        virusSpawnThreshold = 5,
+        virusSpawnThreshold = 2.5,
         infectionrate = 0
     }
 
@@ -32,44 +32,32 @@ function PlayState:update(dt)
     self.board.cursor.offset.x = translateOffsetX
     self.board.cursor.offset.y = translateOffsetY
 
+
     self.virus.virusTimer = self.virus.virusTimer + dt
     if self.virus.virusTimer >= self.virus.virusSpawnThreshold then
         self.virus.virusTimer = 0
+
 
         if not self.virus.started then
             self.virus.started = true
             local tile = self.board.tiles[BOARD_HEIGHT][BOARD_WIDTH]
             tile.infected = true
+            tile.canInfect = true
             self.board.infectedTiles[1] = tile
         else
+            if not self:isVirusInfectious() then
+                print('virus can not spread any more')
+                if not self:availableTiles() then
+                    print('game over')
+                end
+            end
+            
             for i = #self.board.infectedTiles, 1, -1 do
                 -- Infect adjacent tiles
                 local tile = self.board.infectedTiles[i]
-                
-                local t = self.board.tiles[math.min(BOARD_HEIGHT, tile.gridY + 1)][math.min(BOARD_WIDTH, tile.gridX + 1)]
-                if not t.infected and not t.planted then
-                    t.infected = true
-                    table.insert(self.board.infectedTiles, t)
+                if tile.canInfect then
+                    self.board:contaminate(tile)
                 end
-
-                t = self.board.tiles[math.min(BOARD_HEIGHT, tile.gridY + 1)][math.max(1, tile.gridX - 1)]
-                if not t.infected and not t.planted then
-                    t.infected = true
-                    table.insert(self.board.infectedTiles, t)
-                end
-
-                t = self.board.tiles[math.max(1, tile.gridY - 1)][math.min(BOARD_WIDTH, tile.gridX + 1)]
-                if not t.infected and not t.planted then
-                    t.infected = gTextures
-                    table.insert(self.board.infectedTiles, t)
-                end
-
-                t = self.board.tiles[math.max(1, tile.gridY - 1)][math.max(1, tile.gridX - 1)]
-                if not t.infected and not t.planted then
-                    t.infected = true
-                    table.insert(self.board.infectedTiles, t)
-                end
-
             end
 
             if self:noMoreCleanTiles() then
@@ -85,9 +73,6 @@ function PlayState:update(dt)
                 end))
             end
         end
-
-        print('Virus spread')
-
     end
 
     if love.keyboard.wasPressed('tab') or love.keyboard.wasPressed('i') then
@@ -128,10 +113,31 @@ end
 function PlayState:noMoreCleanTiles()
     for i = 1, #self.board.tiles do
         for j = 1, #self.board.tiles[i] do
-            if not self.board.tiles[i][j].infected and not self.board.tiles[i][j].planted then
+            if not self.board.tiles[i][j].infected and not self.board.tiles[i][j].hasTree then
                 return false
             end
         end
     end
     return true
+end
+
+function PlayState:isVirusInfectious()
+    for i = 1, #self.board.infectedTiles do
+        if self.board.infectedTiles[i].canInfect then
+            return true
+        end
+    end
+    return false
+end
+
+function PlayState:availableTiles()
+    for i = 1, #self.board.tiles do
+        for j = 1, #self.board.tiles[i] do
+            local tile = self.board.tiles[i][j]
+            if not tile.hasTree and not tile.infected and string.find(tile.id, 'grass') then
+                return true
+            end
+        end
+    end
+    return false
 end

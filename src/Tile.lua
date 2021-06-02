@@ -16,19 +16,19 @@ function Tile:init(def)
 end
 
 function Tile:update(dt)
-    if self.infected and self.planted then
-        self.planted = false
+    if self.infected and self.hasTree then
+        self.hasTree = false
     end
 end
 
 function Tile:render()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.draw(gTextures[self.id], self.screenX, self.screenY, 0, self.scale.x, self.scale.y)
-    if self.planted then
+    if self.hasTree then
         love.graphics.draw(gTextures['trees'], gFrames[1], self.screenX, self.screenY - 64, 0, 0.3, 0.3)
     end
 end
 
 function Tile:plantTree()
-    self.planted = true
+    self.hasTree = true
 end
