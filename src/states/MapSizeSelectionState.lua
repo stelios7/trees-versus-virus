@@ -18,7 +18,7 @@ function MapSizeSelectionState:update(dt)
             BOARD_WIDTH, BOARD_HEIGHT = 30, 30
         end
         gStateStack:pop()
-        gStateStack:push(PlayState(Board(w, h)))
+        gStateStack:push(PlayState(Board()))
         gStateStack:push(DialogueState('Welcome to this new World.\nPress \'ENTER\' or \'SPACE\' to continue...'))
     elseif love.keyboard.wasPressed('left') then
         self.selection = math.max(1, self.selection -1)

@@ -49,6 +49,10 @@ function PlayState:update(dt)
                 print('virus can not spread any more')
                 if not self:availableTiles() then
                     print('game over')
+                    gStateStack:pop()
+                    gStateStack:push(FadeInState({r=1,g=1,b=1}, 1, function()
+                        gStateStack:push(GameOverState())
+                    end))
                 end
             end
             
