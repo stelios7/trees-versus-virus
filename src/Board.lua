@@ -3,6 +3,7 @@ Board = Class{}
 --#region LOCAL DECLARATIONS
 
 ZOOM_SCALE = 1
+local mousedown = false
 local _dt = 0
 local TILE, BLOCK = 'tile', 'block'
 local shaders = {}
@@ -22,6 +23,7 @@ end
 function Board:init(w, h)
     self.tiles = {}
     self:generateTiles(w or BOARD_WIDTH, h or BOARD_HEIGHT)
+    mousedown = false
 
     self.cursor = {
         ['screenlocation'] = {
@@ -51,7 +53,7 @@ end
 function Board:update(dt)
     _dt = _dt + dt
     self.zoom = ZOOM_SCALE
-    
+
     self.cursor.maplocation = ScreenToMapCoords(self.zoom, self.cursor.offset.x, self.cursor.offset.y)
 
     if self:isCursorOverBoard() and not self.cursor.overboard then
@@ -62,14 +64,19 @@ function Board:update(dt)
 
     if self:isCursorOverBoard() then
         local _tile = self.tiles[self.cursor.maplocation.y][self.cursor.maplocation.x]
-        if love.mouse.wasPressed(1) then
+
+        if love.mouse.wasReleased(1) then
+            mousedown = false
+        end
+
+        if love.mouse.wasPressed(1) or mousedown then
+            mousedown = true
             -- plant tree
             if string.find(_tile.id, 'grass') then
-                _tile:plantTree()
-                self.treesPlanted = self.treesPlanted + 1
+                self.treesPlanted = self.treesPlanted + _tile:plantTree()
             end
         end
-        
+
         if not _tile.highlighted then
             self:highlightTile(_tile)
         end
@@ -153,8 +160,19 @@ function Board:contaminate(source)
             tile.infected = true
             tile.canInfect = true
             table.insert(self.infectedTiles, tile)
-            print(#self.infectedTiles)
         end
     end
     source.canInfect = false
+end
+
+function Board:checkAvailable()
+    for i = 1, #self.tiles do
+        for j = 1, #self.tiles[i] do
+            local tile = self.tiles[i][j]
+            if not tile.infected and not tile.hasTree and string.find(tile.id, 'grass') then
+                return true
+            end
+        end
+    end
+    return false
 end

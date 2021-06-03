@@ -38,6 +38,10 @@ function love.keypressed(key)
     love.keyboard.keysPressed[key] = true
 end
 
+function love.mouse.wasReleased(key)
+    return love.mouse.keysReleased[key]
+end
+
 function love.mouse.wasPressed(key)
     return love.mouse.keysPressed[key]
 end

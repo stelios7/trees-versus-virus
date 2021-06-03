@@ -34,5 +34,7 @@ function Tile:plantTree()
         gSounds['plant-tree']:stop()
         gSounds['plant-tree']:play()
         self.hasTree = true
+        return 1
     end
+    return 0
 end

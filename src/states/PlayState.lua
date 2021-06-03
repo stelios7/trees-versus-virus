@@ -32,6 +32,12 @@ function PlayState:update(dt)
     self.board.cursor.offset.x = translateOffsetX
     self.board.cursor.offset.y = translateOffsetY
 
+    if not self.board:checkAvailable() then
+        gStateStack:pop()
+        gStateStack:push(FadeOutState({r=0,g=0,b=0}, 0.5, function()
+            gStateStack:push(GameOverState())
+        end))
+    end
 
     self.virus.virusTimer = self.virus.virusTimer + dt
     if self.virus.virusTimer >= self.virus.virusSpawnThreshold then
@@ -45,36 +51,12 @@ function PlayState:update(dt)
             tile.canInfect = true
             self.board.infectedTiles[1] = tile
         else
-            if not self:isVirusInfectious() then
-                print('virus can not spread any more')
-                if not self:availableTiles() then
-                    print('game over')
-                    gStateStack:pop()
-                    gStateStack:push(FadeOutState({r=0,g=0,b=0}, 1, function()
-                        gStateStack:push(GameOverState())
-                    end))
-                end
-            end
-            
             for i = #self.board.infectedTiles, 1, -1 do
                 -- Infect adjacent tiles
                 local tile = self.board.infectedTiles[i]
                 if tile.canInfect then
                     self.board:contaminate(tile)
                 end
-            end
-
-            if self:noMoreCleanTiles() then
-                print('Game Over')
-                gStateStack:pop()
-                gStateStack:push(FadeInState({r = 1, g = 1, b = 1}, 1, function()
-                    gStateStack:push(GameOverState())
-                    gStateStack:push(FadeOutState({
-                        r = 1, g = 1, b =1,
-                    }, 1, function()
-                        
-                    end))
-                end))
             end
         end
     end
@@ -117,33 +99,10 @@ function PlayState.MouseMovement()
     end
 end
 
-function PlayState:noMoreCleanTiles()
-    for i = 1, #self.board.tiles do
-        for j = 1, #self.board.tiles[i] do
-            if not self.board.tiles[i][j].infected and not self.board.tiles[i][j].hasTree then
-                return false
-            end
-        end
-    end
-    return true
-end
-
 function PlayState:isVirusInfectious()
     for i = 1, #self.board.infectedTiles do
         if self.board.infectedTiles[i].canInfect then
             return true
-        end
-    end
-    return false
-end
-
-function PlayState:availableTiles()
-    for i = 1, #self.board.tiles do
-        for j = 1, #self.board.tiles[i] do
-            local tile = self.board.tiles[i][j]
-            if not tile.hasTree and not tile.infected and string.find(tile.id, 'grass') then
-                return true
-            end
         end
     end
     return false
