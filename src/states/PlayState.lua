@@ -13,7 +13,7 @@ function PlayState:init(board)
     self.dialogueOpened = false
     self.inventoryOpened = false
 
-    self.UI_items={[1]=Panel{x=VIRTUAL_WIDTH-205,y=5,width=200,height=60,background={r=.1,g=.1,b=.1}},[2]=Icon{x=VIRTUAL_WIDTH-205+5,y=5+5,texture=gTextures['trees'],frame=gFrames[1],shader=love.graphics.newShader(SHADERS.rainbow_pixel),scaleX=50/512,scaleY=50/512},[3]=Icon{x=VIRTUAL_WIDTH-205+100+5,y=5+5+5+2,texture=gTextures['dirt01_block'],shader=love.graphics.newShader(SHADERS.infection),scaleX=5/20,scaleY=5/20}}
+    self.UI_items={[1]=Panel{x=VIRTUAL_WIDTH-205,y=5,width=200,height=60,background={r=.25,g=.25,b=.25}},[2]=Icon{x=VIRTUAL_WIDTH-205+5,y=5+5,texture=gTextures['trees'],frame=gFrames[1],shader=love.graphics.newShader(SHADERS.rainbow_pixel),scaleX=50/512,scaleY=50/512},[3]=Icon{x=VIRTUAL_WIDTH-205+100+5,y=5+5+5+2,texture=gTextures['dirt01_block'],shader=love.graphics.newShader(SHADERS.infection),scaleX=5/20,scaleY=5/20}}
 
     self.virus = {
         virusTimer = 0,
@@ -50,7 +50,7 @@ function PlayState:update(dt)
                 if not self:availableTiles() then
                     print('game over')
                     gStateStack:pop()
-                    gStateStack:push(FadeInState({r=1,g=1,b=1}, 1, function()
+                    gStateStack:push(FadeOutState({r=0,g=0,b=0}, 1, function()
                         gStateStack:push(GameOverState())
                     end))
                 end
@@ -97,20 +97,23 @@ function PlayState:render()
     for i = 1, #self.UI_items do
         self.UI_items[i]:render()
     end
-    love.graphics.setFont(gFonts.odibee.medium)
+    love.graphics.setFont(gFonts.amatic.medium)
     love.graphics.printf(self.board.treesPlanted, VIRTUAL_WIDTH - 205 + 45, 18, 50, 'left')
     love.graphics.printf(#self.board.infectedTiles, VIRTUAL_WIDTH - 205 + 145, 18, 50, 'left')
 end
 
 function PlayState.MouseMovement()
+
+    -- ΚΑΘΕ ΦΟΡΑ ΠΟΥ ΠΑΤΑΩ ΤΗ ΡΟΔΕΛΑ, ΑΠΟΘΗΕΚΥΩ ΤΗΝ ΑΡΧΙΚΗ ΤΟΠΟΘΕΣΙΑ ΤΟΥ ΠΟΝΤΙΚΙΟΥ ΩΣΤΕ ΝΑ ΜΠΟΡΩ ΝΑ ΒΡΙΣΚΩ
+    -- ΤΗΝ ΔΙΑΦΟΡΑ ΓΙΑ ΟΣΗ ΩΡΑ ΤΗΝ ΕΧΩ ΚΡΑΤΗΜΕΝΗ
     if love.mouse.wasPressed(3) then
-        mouseStartX = love.mouse:getX() - (translateOffsetX or 0)
-        mouseStartY = love.mouse:getY() - (translateOffsetY or 0)
+        mouseStartX = GetMouseX() - (translateOffsetX or 0)
+        mouseStartY = GetMouseY() - (translateOffsetY or 0)
     end
 
     if love.mouse.isDown(3) then
-        translateOffsetX = love.mouse:getX() - mouseStartX
-        translateOffsetY = love.mouse:getY() - mouseStartY
+        translateOffsetX = GetMouseX() - mouseStartX
+        translateOffsetY = GetMouseY() - mouseStartY
     end
 end
 

@@ -1,6 +1,5 @@
 MapSizeSelectionState = Class{__includes = BaseState}
 
-local a = 'Choose Map Size'
 
 function MapSizeSelectionState:init()
     self.sizes = {[1] = 'small', [2] = 'medium', [3] = 'large'}
@@ -17,21 +16,30 @@ function MapSizeSelectionState:update(dt)
         else
             BOARD_WIDTH, BOARD_HEIGHT = 30, 30
         end
+        gSounds['select']:stop()
+        gSounds['select']:play()        
         gStateStack:pop()
-        gStateStack:push(PlayState(Board()))
-        gStateStack:push(DialogueState('Welcome to this new World.\nPress \'ENTER\' or \'SPACE\' to continue...'))
+        gStateStack:push(FadeInState({r=0.3,g=0.3,b=0.3},2,function()
+            gStateStack:push(FadeOutState({r=0.3,g=0.3,b=0.3},1, function()
+                gStateStack:push(PlayState(Board()))
+            end)) end))
+
     elseif love.keyboard.wasPressed('left') then
         self.selection = math.max(1, self.selection -1)
+        gSounds['select']:stop()
+        gSounds['select']:play()
     elseif love.keyboard.wasPressed('right') then
         self.selection = math.min(3, self.selection + 1)
+        gSounds['select']:stop()
+        gSounds['select']:play()
     end
 end
 
 function MapSizeSelectionState:render()
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setFont(gFonts.odibee.large)
-    love.graphics.printf(a, VIRTUAL_WIDTH / 2 - 250, 150, 500, 'center')
-    local a = '<  '..self.sizes[self.selection]..'  >'
-    love.graphics.printf(a, VIRTUAL_WIDTH / 2 - 150, VIRTUAL_HEIGHT / 2, 300, 'center')
-    local a = '(enter)'
+    love.graphics.setFont(gFonts.amatic.large)
+    local a = 'Choose Map Size'
+    love.graphics.printf(a, VIRTUAL_WIDTH / 2 - 200, VIRTUAL_HEIGHT / 6, 400, 'center')
+    a = '<  '..self.sizes[self.selection]..'  >'
+    love.graphics.printf(a, VIRTUAL_WIDTH / 2 - 150, 2 * VIRTUAL_HEIGHT / 3, 300, 'center')
 end

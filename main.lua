@@ -12,12 +12,14 @@ function love.load()
     love.window.setMode(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, {vsync = false})
     push:setupScreen(VIRTUAL_WIDTH,VIRTUAL_HEIGHT,WINDOW_WIDTH,WINDOW_HEIGHT,{vsync=false,fullscreen=false,resizable=false,canvas=true})
 
-    _G.gStateStack = StateStack()
-    gStateStack:push(StartState())
-
     love.keyboard.keysPressed = {}
     love.mouse.keyPressed = {}
     love.mouse.keyReleased = {}
+
+    gSounds['select']:setVolume(0.2)
+    
+    _G.gStateStack = StateStack()
+    gStateStack:push(StartState())
     
     diagnosticsEnabled = false
 end
@@ -78,7 +80,7 @@ function love.draw()
 end
 
 function Diagnostics()
-    love.graphics.setFont(gFonts.odibee.small)
+    love.graphics.setFont(gFonts.amatic.small)
     for i = 1, #diagnosticsList do
         if diagnosticsList[i] then
             love.graphics.print(diagnosticsList[i], 5, 5 + 25 * (i - 1))

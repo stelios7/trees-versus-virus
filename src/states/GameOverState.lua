@@ -21,12 +21,12 @@ function GameOverState:update(dt)
 end
 
 function GameOverState:render()
-    love.graphics.reset()
-    love.graphics.origin()
+    -- love.graphics.reset()
+    -- love.graphics.origin()
     love.graphics.setColor(1, 0, 0, 1)
-    love.graphics.setFont(gFonts.odibee.large)
+    love.graphics.setFont(gFonts.amatic.extra_large)
     love.graphics.printf('GAME OVER', 0, 100, VIRTUAL_WIDTH, 'center')
 
-    love.graphics.setFont(gFonts.odibee.medium)
+    love.graphics.setFont(gFonts.amatic.medium)
     love.graphics.printf('PRESS \'SPACE\' TO START AGAIN', 0, 200, VIRTUAL_WIDTH, 'center')
 end

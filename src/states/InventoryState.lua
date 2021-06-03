@@ -7,15 +7,15 @@ function InventoryState:init(inventory, callback)
     local a=Panel{x=-panelWidth,y=64,width=panelWidth,height=panelHeight,background={r=36/255,g=46/255,b=46/255}}
 
     -- CHARACTER NAME LABEL
-    a:addChild(Label{x=panelWidth/5,y=5,width=3*panelWidth/5,height=32,msg={text='STATISTICS',font=gFonts.odibee.medium, alignment = 'center'},linked=true,parent=a})
+    a:addChild(Label{x=panelWidth/5,y=5,width=3*panelWidth/5,height=32,msg={text='STATISTICS',font=gFonts.amatic.medium, alignment = 'center'},linked=true,parent=a})
 
     -- CHARACTER ATTRIBUTE LABELS
     a:addChild(self:newLabel(5, 85, a, 'TOTAL TILES:'))
     a:addChild(self:newLabel(5, 85+35, a, 'SAFE TILES:'))
     a:addChild(self:newLabel(5, 85+70, a, 'INFECTED:'))
     a:addChild(self:newLabel(5, 85+105, a, 'REMAINING:'))
-    -- a:addChild(Label{x=10,y=50+105,width=2*panelWidth/5,height=35,msg={text='REMAINING:',font=gFonts.odibee.medium,alignment='right'},parent=a})
-    -- a:addChild(Label{x=10,y=50+140,width=2*panelWidth/5,height=35,msg={text='LUCK:',font=gFonts.odibee.medium,alignment='right'},parent=a})
+    -- a:addChild(Label{x=10,y=50+105,width=2*panelWidth/5,height=35,msg={text='REMAINING:',font=gFonts.amatic.medium,alignment='right'},parent=a})
+    -- a:addChild(Label{x=10,y=50+140,width=2*panelWidth/5,height=35,msg={text='LUCK:',font=gFonts.amatic.medium,alignment='right'},parent=a})
 
     self.invPanel=Panel{parent=a,x=5,y=3*panelHeight/5,width=panelWidth-10,height=2*panelHeight/5-5,background={r=18/255,g=28/255,b=28/255},linked=true}
     a:addChild(self.invPanel)
@@ -44,5 +44,5 @@ function InventoryState:render()
 end
 
 function InventoryState:newLabel(x, y, parent, text)
-    return Label{x=x,y=y,width=3*panelWidth/5,height=35,msg={text=text,font=gFonts.odibee.medium,alignment='right'},parent=parent}
+    return Label{x=x,y=y,width=3*panelWidth/5,height=35,msg={text=text,font=gFonts.amatic.medium,alignment='right'},parent=parent}
 end

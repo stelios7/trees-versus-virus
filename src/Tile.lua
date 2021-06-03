@@ -30,5 +30,9 @@ function Tile:render()
 end
 
 function Tile:plantTree()
-    self.hasTree = true
+    if not self.hasTree and not self.infected then
+        gSounds['plant-tree']:stop()
+        gSounds['plant-tree']:play()
+        self.hasTree = true
+    end
 end

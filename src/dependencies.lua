@@ -55,9 +55,17 @@ gFonts = {
         small = love.graphics.newFont('assets/fonts/odibee.ttf', 16),
         medium = love.graphics.newFont('assets/fonts/odibee.ttf', 32),
         large = love.graphics.newFont('assets/fonts/odibee.ttf', 64)
+    },
+    amatic = {
+        small = love.graphics.newFont('assets/fonts/amatic.ttf', 16),
+        medium = love.graphics.newFont('assets/fonts/amatic.ttf', 32),
+        large = love.graphics.newFont('assets/fonts/amatic.ttf', 64),
+        extra_large = love.graphics.newFont('assets/fonts/amatic.ttf', 96)
     }
 }
 
 gSounds = {
-    ['main'] = love.audio.newSource('assets/sounds/synth01.wav', 'static')
+    ['main'] = love.audio.newSource('assets/sounds/synth01.wav', 'static'),
+    ['select'] = love.audio.newSource('assets/sounds/select.wav', 'static'),
+    ['plant-tree'] = love.audio.newSource('assets/sounds/plant-tree.wav','static')
 }
