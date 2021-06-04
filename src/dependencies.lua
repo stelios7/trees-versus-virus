@@ -42,7 +42,8 @@ gTextures = {
     ['grass02_block'] = love.graphics.newImage('assets/textures/blocks/grass02_block.png'),
     ['water01_block'] = love.graphics.newImage('assets/textures/blocks/water01_block.png'),
 
-    ['trees'] = love.graphics.newImage('assets/textures/trees.png')
+    ['trees'] = love.graphics.newImage('assets/textures/trees.png'),
+    ['background'] = love.graphics.newImage('assets/textures/space-background.png')
 }
 
 gFrames = {

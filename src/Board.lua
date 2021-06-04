@@ -62,32 +62,6 @@ function Board:update(dt)
         self.cursor.overboard = false
     end
 
-    if self:isCursorOverBoard() then
-        local _tile = self.tiles[self.cursor.maplocation.y][self.cursor.maplocation.x]
-
-        if love.mouse.wasReleased(1) then
-            mousedown = false
-        end
-
-        if love.mouse.wasPressed(1) or mousedown then
-            mousedown = true
-            -- plant tree
-            if string.find(_tile.id, 'grass') then
-                self.treesPlanted = self.treesPlanted + _tile:plantTree()
-            end
-        end
-
-        if not _tile.highlighted then
-            self:highlightTile(_tile)
-        end
-    else
-        for y = 1, #self.tiles do
-            for x =1, #self.tiles[y] do
-                self.tiles[y][x].highlighted = false
-            end
-        end
-    end
-
     for y = 1, #self.tiles do
         for x = 1, #self.tiles[y] do
             self.tiles[y][x]:update(dt)

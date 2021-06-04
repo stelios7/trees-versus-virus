@@ -2,5 +2,8 @@
     "Lua.diagnostics.globals": [
         "love",
         "push"
+    ],
+    "Lua.diagnostics.disable": [
+        "trailing-space"
     ]
 }
