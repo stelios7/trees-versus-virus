@@ -200,7 +200,7 @@ function PlayState:GameOver()
     if #self.board.infectedTiles > total_tiles * .5 then
         gStateStack:pop()
         gStateStack:push(FadeInState({r=1, g=1, b=1}, 1, function()
-            gStateStack:pusH(GameOverState({status = 'loss'}))
+            gStateStack:push(GameOverState({status = 'loss'}))
         end))
         return
     end
