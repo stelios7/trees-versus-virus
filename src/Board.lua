@@ -133,7 +133,7 @@ function Board:contaminate(source)
         if not tile.infected and not tile.hasTree then
             tile.infected = true
             tile.canInfect = true
-            table.insert(self.infectedTiles, tile)
+            self.infectedTiles[#self.infectedTiles+1] = tile
         end
     end
     source.canInfect = false

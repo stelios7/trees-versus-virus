@@ -10,11 +10,11 @@ end
 function MapSizeSelectionState:update(dt)
     if love.keyboard.wasPressed('return') then
         if self.selection == 1 then
-            BOARD_WIDTH, BOARD_HEIGHT = 10, 10
+            BOARD_WIDTH, BOARD_HEIGHT = 15, 15
         elseif self.selection == 2 then
             BOARD_WIDTH, BOARD_HEIGHT = 20, 20
         else
-            BOARD_WIDTH, BOARD_HEIGHT = 30, 30
+            BOARD_WIDTH, BOARD_HEIGHT = 35, 35
         end
         gSounds['select']:stop()
         gSounds['select']:play()        

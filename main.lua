@@ -84,10 +84,10 @@ function love.draw()
 end
 
 function Diagnostics()
-    love.graphics.setFont(gFonts.amatic.small)
+    love.graphics.setFont(gFonts.amatic.medium)
     for i = 1, #diagnosticsList do
         if diagnosticsList[i] then
-            love.graphics.print(diagnosticsList[i], 5, 5 + 25 * (i - 1))
+            love.graphics.print(diagnosticsList[i], 5, 5 + 30 * (i - 1))
         end
     end
 end
